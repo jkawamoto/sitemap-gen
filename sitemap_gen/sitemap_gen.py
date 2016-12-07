@@ -20,7 +20,7 @@ except ImportError:
     from urllib import parse as urlparse
 
 
-TIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
+TIME_FORMAT = "%Y-%m-%dT%H:%M:%S+00:00"
 """Time format.
 """
 
