@@ -21,17 +21,18 @@ $ pip install -e git+https://github.com/jkawamoto/sitemap-gen.git
 ## Usage
 
 ~~~
-sitemap-gen [-h] [--root ROOT] [--output OUTPUT] base
+sitemap-gen [-h] [--root ROOT] [--output OUTPUT] [--tracked-files] base_url
 
 Generate a sitemap of a website managed in a git repository.
 
 positional arguments:
-  base             Base URL of the web site.
+  base_url         Base URL of the web site.
 
 optional arguments:
   -h, --help       show this help message and exit
   --root ROOT      Document root of the web site. (Default: current dir)
   --output OUTPUT  Output filename. (Default: sitemap.xml)
+  --tracked-files  If set, only tracked files will be included in the sitemap.
 ~~~
 
 
