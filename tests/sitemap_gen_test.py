@@ -18,7 +18,7 @@ import time
 import unittest
 from xml.etree import ElementTree
 
-import sitemap_gen
+from sitemap_gen import sitemap_gen
 
 HTMLDIR = path.join(path.dirname(__file__), "html")
 

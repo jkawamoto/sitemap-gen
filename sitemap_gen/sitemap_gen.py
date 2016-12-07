@@ -1,4 +1,3 @@
-#! /usr/bin/env python
 #
 # sitemap_gen.py
 #
@@ -10,19 +9,13 @@
 #
 """Generate a sitemap of a website managed in a git repository.
 """
-import argparse
-from argparse import FileType
 import jinja2
 import os
 from os import path
 import subprocess
-import sys
 import time
 import urlparse
 
-TEMPLATE = path.join(path.dirname(__file__), "template")
-"""Template directory.
-"""
 
 TIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
 """Time format.
@@ -80,7 +73,7 @@ def generate(base_url, root):
       String representing a site map.
     """
     env = jinja2.Environment(
-        loader=jinja2.FileSystemLoader(TEMPLATE, encoding='utf8'))
+        loader=jinja2.FileSystemLoader(path.dirname(__file__), encoding='utf8'))
     tmpl = env.get_template("sitemap.xml")
 
     return tmpl.render(pages=[ #pylint: disable=E1101
@@ -91,36 +84,3 @@ def generate(base_url, root):
         )
         for filename in find(root)
     ])
-
-
-def run(base, root, output):
-    """Run `sitemap_gen` command.
-
-    Args:
-      base: Base URL of the web site.
-      root: Document root of the web site.
-      output: Output file object.
-    """
-    output.write(generate(base, root))
-    output.write("\n")
-
-
-def main():
-    """The main function.
-    """
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("base", help="Base URL of the web site.")
-    parser.add_argument(
-        "--root", default=".",
-        help="Document root of the web site. (Default: current dir)")
-    parser.add_argument(
-        "--output", default=FileType("w")("sitemap.xml"), type=FileType("w"),
-        help="Output filename. (Default: sitemap.xml)")
-
-    run(**vars(parser.parse_args()))
-
-if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        sys.exit(1)
