@@ -79,7 +79,7 @@ def generate(base_url, root):
         loader=jinja2.FileSystemLoader(path.dirname(__file__), encoding='utf8'))
     tmpl = env.get_template("sitemap.xml")
 
-    return tmpl.render(pages=[ #pylint: disable=E1101
+    return tmpl.render(pages=[  # pylint: disable=E1101
         dict(
             url=urlparse.urljoin(base_url, filename),
             lastmod=time.strftime(

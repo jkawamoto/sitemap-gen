@@ -26,6 +26,7 @@ HTMLDIR = path.join(path.dirname(__file__), "html")
 class TestFind(unittest.TestCase):
     """Test case for finding html files.
     """
+
     def setUp(self):
         """Set up the test case.
         """
@@ -50,6 +51,7 @@ class TestFind(unittest.TestCase):
 class TestModTime(unittest.TestCase):
     """Test case for obtaining modified times.
     """
+
     def setUp(self):
         """Set up the test case.
         """
@@ -67,9 +69,9 @@ class TestModTime(unittest.TestCase):
         """
         res = sitemap_gen.mod_time(path.join(HTMLDIR, "./index.html"))
         ans = int(subprocess.check_output([
-                "git", "--no-pager", "log", "--pretty=%at", "-n1",
-                path.join(HTMLDIR, "index.html")
-            ]))
+            "git", "--no-pager", "log", "--pretty=%at", "-n1",
+            path.join(HTMLDIR, "index.html")
+        ]))
         self.assertEqual(res, ans)
 
     def test_new_file(self):
@@ -82,6 +84,7 @@ class TestModTime(unittest.TestCase):
 class TestSitemapGen(unittest.TestCase):
     """Test case for generating a site map.
     """
+
     def setUp(self):
         """Set up the test case.
         """

@@ -8,4 +8,4 @@
 # http://opensource.org/licenses/mit-license.php
 #
 from __future__ import absolute_import
-from sitemap_gen.sitemap_gen import generate 
+from sitemap_gen.sitemap_gen import generate

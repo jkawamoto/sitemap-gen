@@ -12,6 +12,7 @@
 from setuptools import setup, find_packages
 import sitemap_gen
 
+
 def load_requires_from_file(filepath):
     """Read a package list from a given file path.
 
