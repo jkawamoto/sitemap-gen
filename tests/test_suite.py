@@ -8,7 +8,7 @@
 #
 # http://opensource.org/licenses/mit-license.php
 #
-""" Test suite.
+"""Test suite.
 """
 import sys
 import unittest
@@ -17,7 +17,7 @@ from . import sitemap_gen_test
 
 
 def suite():
-    """ Returns a test suite.
+    """Returns a test suite.
     """
     loader = unittest.TestLoader()
     res = unittest.TestSuite()
@@ -27,7 +27,7 @@ def suite():
 
 
 def main():
-    """ The main function.
+    """The main function.
 
     Returns:
       Status code.

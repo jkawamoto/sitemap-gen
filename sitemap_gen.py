@@ -1,4 +1,13 @@
 #! /usr/bin/env python
+#
+# sitemap_gen.py
+#
+# Copyright (c) 2016 Junpei Kawamoto
+#
+# This software is released under the MIT License.
+#
+# http://opensource.org/licenses/mit-license.php
+#
 """Generate a sitemap of a website managed in a git repository.
 """
 import argparse
