@@ -1,7 +1,7 @@
 # sitemap-gen
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 [![Build Status](https://travis-ci.org/jkawamoto/sitemap-gen.svg?branch=master)](https://travis-ci.org/jkawamoto/sitemap-gen)
-[![PyPi](https://img.shields.io/badge/sitemap-gen-0.1.0-lightgrey.svg)](https://pypi.python.org/pypi?:action=display&name=sitemap-gen)
+[![Release](https://img.shields.io/badge/release-0.1.0-brightgreen.svg)](https://github.com/jkawamoto/sitemap-gen/releases/tag/v0.1.0)
 
 Generate a sitemap of a website managed in a git repository.
 
@@ -14,7 +14,7 @@ this tool uses the git commit log of those files.
 ## Install
 
 ```
-$ pip install --upgrade sitemap-gen
+$ pip install -e git+https://github.com/jkawamoto/sitemap-gen.git
 ```
 
 
