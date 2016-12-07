@@ -3,6 +3,7 @@
 from __future__ import absolute_import
 import os
 from os import path
+import subprocess
 import tempfile
 import unittest
 
@@ -33,6 +34,38 @@ class TestFind(unittest.TestCase):
         self.assertIn("./index.html", res)
         self.assertIn("sub/sub.html", res)
         self.assertIn("./" + path.basename(self.path), res)
+
+
+class TestModTime(unittest.TestCase):
+    """Test case for obtaining modified times.
+    """
+    def setUp(self):
+        """Set up the test case.
+        """
+        with tempfile.NamedTemporaryFile(
+                suffix=".html", dir=HTMLDIR, delete=False) as fp:
+            self.path = fp.name
+
+    def tearDown(self):
+        """Tear down the test case.
+        """
+        os.remove(self.path)
+
+    def test_index(self):
+        """Obtaining the modified time of `index.html`.
+        """
+        res = sitemap_gen.mod_time(path.join(HTMLDIR, "./index.html"))
+        ans = int(subprocess.check_output([
+                "git", "--no-pager", "log", "--pretty=%at", "-n1",
+                path.join(HTMLDIR, "index.html")
+            ]))
+        self.assertEqual(res, ans)
+
+    def test_new_file(self):
+        """Obtaining the modified time of a temporal file.
+        """
+        res = sitemap_gen.mod_time(self.path)
+        self.assertEqual(res, int(path.getmtime(self.path)))
 
 
 if __name__ == "__main__":
