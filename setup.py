@@ -10,7 +10,6 @@
 """Package information.
 """
 from setuptools import setup, find_packages
-import sitemap_gen
 
 
 def load_requires_from_file(filepath):
@@ -31,7 +30,7 @@ setup(
     version="0.1.0",
     author="Junpei Kawamoto",
     author_email="kawamoto.junpei@gmail.com",
-    description=sitemap_gen.__doc__,
+    description="Generate a sitemap of a website managed in a git repository.",
     packages=find_packages(exclude=["tests"]),
     package_data={
         "sitemap_gen": ["sitemap.xml"]
