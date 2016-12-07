@@ -1,10 +1,13 @@
 #! /usr/bin/env python
 """Generate a sitemap of a website managed in a git repository.
 """
+import argparse
+from argparse import FileType
 import jinja2
 import os
 from os import path
 import subprocess
+import sys
 import time
 import urlparse
 
@@ -79,3 +82,36 @@ def generate(base_url, root):
         )
         for filename in find(root)
     ])
+
+
+def run(base, root, output):
+    """Run `sitemap_gen` command.
+
+    Args:
+      base: Base URL of the web site.
+      root: Document root of the web site.
+      output: Output file object.
+    """
+    output.write(generate(base, root))
+    output.write("\n")
+
+
+def main():
+    """The main function.
+    """
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("base", help="Base URL of the web site.")
+    parser.add_argument(
+        "--root", default=".",
+        help="Document root of the web site. (Default: current dir)")
+    parser.add_argument(
+        "--output", default=FileType("w")("sitemap.xml"), type=FileType("w"),
+        help="Output filename. (Default: sitemap.xml)")
+
+    run(**vars(parser.parse_args()))
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        sys.exit(1)
