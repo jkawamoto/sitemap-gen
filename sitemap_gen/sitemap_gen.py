@@ -14,7 +14,10 @@ import os
 from os import path
 import subprocess
 import time
-import urlparse
+try:
+    import urlparse
+except ImportError:
+    from urllib import parse as urlparse
 
 
 TIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
