@@ -1,9 +1,16 @@
 #! /usr/bin/env python
 """Generate a sitemap of a website managed in a git repository.
 """
+import jinja2
 import os
 from os import path
 import subprocess
+import time
+import urlparse
+
+TEMPLATE = path.join(path.dirname(__file__), "template")
+TIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
+# YYYY-MM-DDThh:mm:ss
 
 
 def find(root):
@@ -44,3 +51,20 @@ def mod_time(filepath):
         return int(path.getmtime(filepath))
     except ValueError:
         return int(path.getmtime(filepath))
+
+
+def generate(base_url, root):
+    """Generate a site map of a web site of which root is given.
+    """
+    env = jinja2.Environment(
+        loader=jinja2.FileSystemLoader(TEMPLATE, encoding='utf8'))
+    tmpl = env.get_template("sitemap.xml")
+
+    return tmpl.render(pages=[
+        dict(
+            url=urlparse.urljoin(base_url, filename),
+            lastmod=time.strftime(
+                TIME_FORMAT, time.gmtime(mod_time(path.join(root, filename))))
+        )
+        for filename in find(root)
+    ])
