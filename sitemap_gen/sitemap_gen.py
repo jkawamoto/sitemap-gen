@@ -25,19 +25,29 @@ TIME_FORMAT = "%Y-%m-%dT%H:%M:%S+00:00"
 """
 
 
-def find(root):
+def find(root, tracked_files=False):
     """Looking for html files from a given root directory.
 
     Args:
       root: Path for the root directory where the traverse starts.
+      tracked_files: If True, yields only tracked files.
 
     Yields:
       Relative path of found files from the given root dir.
     """
-    for dirpath, _, filenames in os.walk(root):
-        for name in filenames:
+    if tracked_files:
+        base = subprocess.check_output(["pwd"]).strip()
+        for name in subprocess.check_output(["git", "ls-files"]).split("\n"):
             if name.endswith(".html"):
-                yield path.join(path.relpath(dirpath, root), name)
+                p = path.join(base, name)
+                if root == "." or p.startswith(root):
+                    yield path.relpath(p, root)
+
+    else:
+        for dirpath, _, filenames in os.walk(root):
+            for name in filenames:
+                if name.endswith(".html"):
+                    yield path.relpath(path.join(dirpath, name), root)
 
 
 def mod_time(filepath):
@@ -65,12 +75,13 @@ def mod_time(filepath):
         return int(path.getmtime(filepath))
 
 
-def generate(base_url, root):
+def generate(base_url, root, tracked_files=False):
     """Generate a site map of a web site of which root is given.
 
     Args:
       base_url: Base URL of the web site of which site map this function generates.
       root: Document root of the web site.
+      tracked_files: If True, only tracked files will be included.
 
     Returns:
       String representing a site map.
@@ -85,5 +96,5 @@ def generate(base_url, root):
             lastmod=time.strftime(
                 TIME_FORMAT, time.gmtime(mod_time(path.join(root, filename))))
         )
-        for filename in find(root)
+        for filename in find(root, tracked_files)
     ])

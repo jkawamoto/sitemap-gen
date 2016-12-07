@@ -16,15 +16,18 @@ import sys
 import sitemap_gen
 
 
-def run(base, root, output):
+def run(output, **kwargs):
     """Run `sitemap_gen` command.
 
     Args:
-      base: Base URL of the web site.
-      root: Document root of the web site.
       output: Output file object.
+
+    Keyword Args:
+      base_url: Base URL of the web site of which site map this function generates.
+      root: Document root of the web site.
+      tracked_files: If True, only tracked files will be included.
     """
-    output.write(sitemap_gen.generate(base, root))
+    output.write(sitemap_gen.generate(**kwargs))
     output.write("\n")
 
 
@@ -32,13 +35,17 @@ def main():
     """The main function.
     """
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("base", help="Base URL of the web site.")
+    parser.add_argument(
+        "base_url", help="Base URL of the web site.")
     parser.add_argument(
         "--root", default=".",
         help="Document root of the web site. (Default: current dir)")
     parser.add_argument(
         "--output", default=FileType("w")("sitemap.xml"), type=FileType("w"),
         help="Output filename. (Default: sitemap.xml)")
+    parser.add_argument(
+        "--tracked-files", action="store_true", dest="tracked_files",
+        help="If set, only tracked files will be included in the sitemap.")
 
     run(**vars(parser.parse_args()))
 

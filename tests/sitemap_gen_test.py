@@ -43,9 +43,18 @@ class TestFind(unittest.TestCase):
         """Test find function returns `index.html`, `sub.html`, and a temp file.
         """
         res = set(sitemap_gen.find(HTMLDIR))
-        self.assertIn("./index.html", res)
+        self.assertIn("index.html", res)
         self.assertIn("sub/sub.html", res)
-        self.assertIn("./" + path.basename(self.path), res)
+        self.assertIn(path.basename(self.path), res)
+
+    def test_tracked_files(self):
+        """Test find function to get only tracked files.
+        """
+        res = set(sitemap_gen.find(HTMLDIR, True))
+        self.assertIn("index.html", res)
+        self.assertIn("sub/sub.html", res)
+        self.assertNotIn(path.basename(self.path), res)
+
 
 
 class TestModTime(unittest.TestCase):
@@ -110,6 +119,26 @@ class TestSitemapGen(unittest.TestCase):
         for elem in root:
             self.assertEqual(elem.tag, self.tagname("url"))
             loc = elem.findtext(self.tagname("loc"))[len(base_url):]
+            mod = time.strftime(
+                sitemap_gen.TIME_FORMAT,
+                time.gmtime(sitemap_gen.mod_time(path.join(HTMLDIR, loc))))
+            self.assertEqual(elem.findtext(self.tagname("lastmod")), mod)
+
+    def test_tracked_files(self):
+        """Generating a site map with only tracked files.
+        """
+        base_url = "https://jkawamoto.github.io/sitemap-gen/"
+        res = sitemap_gen.generate(base_url, HTMLDIR, True)
+        print(res)
+
+        root = ElementTree.fromstring(res)
+        self.assertEqual(root.tag, self.tagname("urlset"))
+
+        for elem in root:
+            self.assertEqual(elem.tag, self.tagname("url"))
+            loc = elem.findtext(self.tagname("loc"))[len(base_url):]
+            self.assertFalse(self.path.endswith(loc))
+
             mod = time.strftime(
                 sitemap_gen.TIME_FORMAT,
                 time.gmtime(sitemap_gen.mod_time(path.join(HTMLDIR, loc))))
