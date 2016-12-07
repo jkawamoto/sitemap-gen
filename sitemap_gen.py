@@ -9,8 +9,12 @@ import time
 import urlparse
 
 TEMPLATE = path.join(path.dirname(__file__), "template")
+"""Template directory.
+"""
+
 TIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
-# YYYY-MM-DDThh:mm:ss
+"""Time format.
+"""
 
 
 def find(root):
@@ -55,12 +59,19 @@ def mod_time(filepath):
 
 def generate(base_url, root):
     """Generate a site map of a web site of which root is given.
+
+    Args:
+      base_url: Base URL of the web site of which site map this function generates.
+      root: Document root of the web site.
+
+    Returns:
+      String representing a site map.
     """
     env = jinja2.Environment(
         loader=jinja2.FileSystemLoader(TEMPLATE, encoding='utf8'))
     tmpl = env.get_template("sitemap.xml")
 
-    return tmpl.render(pages=[
+    return tmpl.render(pages=[ #pylint: disable=E1101
         dict(
             url=urlparse.urljoin(base_url, filename),
             lastmod=time.strftime(
